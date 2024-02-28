@@ -49,6 +49,7 @@ futurePublisher.sink { value in
 private let emptyPublisher = Empty<Any, Error>(completeImmediately: true)
 
 /// 예제
+///
 emptyPublisher.sink { completion in
     print("**** emptyPublisher ****")
     print("completion: \(completion)", separator: " ")
@@ -69,9 +70,11 @@ enum SomeError: Error {
 }
 /// 특정 에러와 함께 즉시 완료되는 publisher
 /// 아무런 값도 방출하지 않고 오직 에러만 방출
+///
 private let failPublisher = Fail<String, SomeError>(error: SomeError.notfound)
 
 /// 예제
+///
 failPublisher.sink { completion in
     switch completion {
     case .failure(let error):
@@ -93,7 +96,16 @@ private let defferedPublisher = Deferred {
 //
 /// 시퀀스를 반환하는 publisher
 /// 시퀀스의 요소들을 각 하나씩 모두 방출하다가 모든 요소들이 방출되었을 때 완료
-#warning("학습한 내용 정리해야 함")
+private let sequencePublisher = (1...10).publisher
+
+/// 예제
+///
+sequencePublisher.sink { completion in
+    print("**** sequencePublisher ****")
+    print("completion: \(completion)")
+} receiveValue: { value in
+    print("value: \(value)")
+}
 
 // MARK: - Timer
 //
@@ -103,6 +115,7 @@ private let defferedPublisher = Deferred {
 private let timerPublisher = Timer.publish(every: 1.0, on: .main, in: .common)
 
 /// 예제
+///
 private let timerSubscription = timerPublisher.autoconnect()
     .sink { value in
         print("**** timerPublisher ****")
