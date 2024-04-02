@@ -109,6 +109,18 @@ private let defferedPublisher = Deferred {
     Just(50)
 }
 
+defferedPublisher
+    .sink { completion in
+        switch completion {
+        case .finished:
+            print("Received completion: \(completion)")
+        case .failure(let error):
+            print("Received completion: \(error)")
+        }
+    } receiveValue: { value in
+        print("Received value: \(value)")
+    }
+
 // MARK: - Sequence Struct
 //
 /// 시퀀스를 반환하는 publisher
